@@ -46,7 +46,7 @@ Rectangle {
                 Text {
                     id: welcome
                     Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("Welcome to GPT4All")
+                    text: qsTr("Welcome to TAi Studio!")
                     font.pixelSize: theme.fontSizeBannerLarge
                     color: theme.titleTextColor
                 }
@@ -188,7 +188,7 @@ Rectangle {
                                     focus: false
                                     Accessible.role: Accessible.Paragraph
                                     Accessible.name: qsTr("Latest news")
-                                    Accessible.description: qsTr("Latest news from GPT4All")
+                                    Accessible.description: qsTr("Latest news from TAi Studio")
                                     onLinkActivated: function(link) {
                                         Qt.openUrlExternally(link);
                                     }
@@ -221,31 +221,13 @@ Rectangle {
                     MyFancyLink {
                         text: qsTr("Release Notes")
                         imageSource: "qrc:/gpt4all/icons/notes.svg"
-                        onClicked: { Qt.openUrlExternally("https://github.com/nomic-ai/gpt4all/releases") }
-                    }
-
-                    MyFancyLink {
-                        text: qsTr("Documentation")
-                        imageSource: "qrc:/gpt4all/icons/info.svg"
-                        onClicked: { Qt.openUrlExternally("https://docs.gpt4all.io/") }
-                    }
-
-                    MyFancyLink {
-                        text: qsTr("Discord")
-                        imageSource: "qrc:/gpt4all/icons/discord.svg"
-                        onClicked: { Qt.openUrlExternally("https://discord.gg/4M2QFmTt2k") }
-                    }
-
-                    MyFancyLink {
-                        text: qsTr("X (Twitter)")
-                        imageSource: "qrc:/gpt4all/icons/twitter.svg"
-                        onClicked: { Qt.openUrlExternally("https://twitter.com/nomic_ai") }
+                        onClicked: { Qt.openUrlExternally("https://github.com/tda45/TAi-Studio/releases") }
                     }
 
                     MyFancyLink {
                         text: qsTr("Github")
                         imageSource: "qrc:/gpt4all/icons/github.svg"
-                        onClicked: { Qt.openUrlExternally("https://github.com/nomic-ai/gpt4all") }
+                        onClicked: { Qt.openUrlExternally("https://github.com/tda45/TAi-Studio") }
                     }
                 }
 
@@ -254,9 +236,9 @@ Rectangle {
                     spacing: 40
 
                     MyFancyLink {
-                        text: qsTr("nomic.ai")
+                        text: qsTr("TAi Studio")
                         imageSource: "qrc:/gpt4all/icons/globe.svg"
-                        onClicked: { Qt.openUrlExternally("https://www.nomic.ai/gpt4all") }
+                        onClicked: { Qt.openUrlExternally("https://www.github.com/tda45/TAi-Studio") }
                         rightPadding: 15
                     }
                 }
@@ -279,9 +261,9 @@ Rectangle {
             MyFancyLink {
                 id: subscribeLink
                 Layout.alignment: Qt.AlignCenter
-                text: qsTr("Subscribe to Newsletter")
+                text: qsTr("Fork To Project")
                 imageSource: "qrc:/gpt4all/icons/email.svg"
-                onClicked: { Qt.openUrlExternally("https://nomic.ai/gpt4all/#newsletter-form") }
+                onClicked: { Qt.openUrlExternally("https://github.com/tda45/TAi-Studio/fork") }
             }
         }
     }

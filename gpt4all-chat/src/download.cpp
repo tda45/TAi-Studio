@@ -158,7 +158,7 @@ bool Download::isFirstStart(bool writeVersion) const
 
 void Download::updateReleaseNotes()
 {
-    QUrl jsonUrl("http://gpt4all.io/meta/release.json");
+    QUrl jsonUrl("https://raw.githubusercontent.com/tda45/TAi-Studio/main/gpt4all-chat/metadata/release.json");
     QNetworkRequest request(jsonUrl);
     QSslConfiguration conf = request.sslConfiguration();
     conf.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -170,7 +170,7 @@ void Download::updateReleaseNotes()
 
 void Download::updateLatestNews()
 {
-    QUrl url("http://gpt4all.io/meta/latestnews.md");
+    QUrl url("https://github.com/tda45/TAi-Studio/releases");
     QNetworkRequest request(url);
     QSslConfiguration conf = request.sslConfiguration();
     conf.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -211,7 +211,7 @@ void Download::downloadModel(const QString &modelFile)
 
     ModelList::globalInstance()->updateDataByFilename(modelFile, {{ ModelList::DownloadingRole, true }});
     ModelInfo info = ModelList::globalInstance()->modelInfoByFilename(modelFile);
-    QString url = !info.url().isEmpty() ? info.url() : "http://gpt4all.io/models/gguf/" + modelFile;
+    QString url = !info.url().isEmpty() ? info.url() : "https://huggingface.co/models/" + modelFile;
     Network::globalInstance()->trackEvent("download_started", { {"model", modelFile} });
     QNetworkRequest request(url);
     request.setAttribute(QNetworkRequest::User, modelFile);
@@ -285,25 +285,25 @@ void Download::installCompatibleModel(const QString &modelName, const QString &a
 {
     Q_ASSERT(!modelName.isEmpty());
     if (modelName.isEmpty()) {
-        emit toastMessage(tr("ERROR: $MODEL_NAME is empty."));
+        emit toastMessage(tr("HATA: $MODEL_NAME boş."));
         return;
     }
 
     Q_ASSERT(!apiKey.isEmpty());
     if (apiKey.isEmpty()) {
-        emit toastMessage(tr("ERROR: $API_KEY is empty."));
+        emit toastMessage(tr("HATA: $API_KEY boş."));
         return;
     }
 
     QUrl apiBaseUrl(QUrl::fromUserInput(baseUrl));
     if (!Network::isHttpUrlValid(baseUrl)) {
-        emit toastMessage(tr("ERROR: $BASE_URL is invalid."));
+        emit toastMessage(tr("HATA: $BASE_URL geçersiz."));
         return;
     }
 
     QString modelFile(ModelList::compatibleModelFilename(baseUrl, modelName));
     if (ModelList::globalInstance()->contains(modelFile)) {
-        emit toastMessage(tr("ERROR: Model \"%1 (%2)\" is conflict.").arg(modelName, baseUrl));
+        emit toastMessage(tr("HATA: Model \"%1 (%2)\" çakışmaktadır.").arg(modelName, baseUrl));
         return;
     }
     ModelList::globalInstance()->addModel(modelFile);
@@ -417,7 +417,7 @@ void Download::handleLatestNewsDownloadFinished()
         return;
 
     if (reply->error() != QNetworkReply::NoError) {
-        qWarning() << "ERROR: network error occurred attempting to download latest news:" << reply->errorString();
+        qWarning() << "HATA: En son haberler indirilirken ağ hatası oluştu:" << reply->errorString();
         reply->deleteLater();
         return;
     }
@@ -474,7 +474,7 @@ void Download::handleErrorOccurred(QNetworkReply::NetworkError code)
     clearRetry(modelFilename);
 
     const QString error
-        = u"ERROR: Network error occurred attempting to download %1 code: %2 errorString %3"_s
+        = u"HATA: Ağ hatası %1 indirilmeye çalışılırken oluştu, kod: %2 hataDizesi %3"_s
             .arg(modelFilename)
             .arg(code)
             .arg(modelReply->errorString());
@@ -548,7 +548,7 @@ void HashAndSaveFile::hashAndSave(const QString &expectedHash, QCryptographicHas
     // Reopen the tempFile for hashing
     if (!tempFile->open(QIODevice::ReadOnly)) {
         const QString error
-            = u"ERROR: Could not open temp file for hashing: %1 %2"_s.arg(tempFile->fileName(), modelFilename);
+            = u"HATA: Temp dosyası hash için açılamadı: %1 %2"_s.arg(tempFile->fileName(), modelFilename);
         qWarning() << error;
         emit hashAndSaveFinished(false, error, tempFile, modelReply);
         return;
@@ -560,7 +560,7 @@ void HashAndSaveFile::hashAndSave(const QString &expectedHash, QCryptographicHas
     if (hash.result().toHex() != expectedHash.toLatin1()) {
         tempFile->close();
         const QString error
-            = u"ERROR: Download error hash did not match: %1 != %2 for %3"_s
+            = u"HATA: İndirme hatası karması eşleşmedi: %1 != %2 for %3"_s
                 .arg(hash.result().toHex(), expectedHash.toLatin1(), modelFilename);
         qWarning() << error;
         tempFile->remove();
@@ -582,7 +582,7 @@ void HashAndSaveFile::hashAndSave(const QString &expectedHash, QCryptographicHas
     // Reopen the tempFile for copying
     if (!tempFile->open(QIODevice::ReadOnly)) {
         const QString error
-            = u"ERROR: Could not open temp file at finish: %1 %2"_s.arg(tempFile->fileName(), modelFilename);
+            = u"HATA: Temp dosyası bitince açılamadı: %1 %2"_s.arg(tempFile->fileName(), modelFilename);
         qWarning() << error;
         emit hashAndSaveFinished(false, error, tempFile, modelReply);
         return;
@@ -602,7 +602,7 @@ void HashAndSaveFile::hashAndSave(const QString &expectedHash, QCryptographicHas
     } else {
         QFile::FileError error = file.error();
         const QString errorString
-            = u"ERROR: Could not save model to location: %1 failed with code %1"_s.arg(saveFilePath).arg(error);
+            = u"HATA: Modeli konuma kaydedilemedi: %1 kodla başarısız oldu %1"_s.arg(saveFilePath).arg(error);
         qWarning() << errorString;
         tempFile->close();
         emit hashAndSaveFinished(false, errorString, tempFile, modelReply);
@@ -623,7 +623,7 @@ void Download::handleModelDownloadFinished()
 
     if (modelReply->error()) {
         const QString errorString
-            = u"ERROR: Downloading failed with code %1 \"%2\""_s.arg(modelReply->error()).arg(modelReply->errorString());
+            = u"HATA: İndirme başarısız oldu, kod: %1 \"%2\""_s.arg(modelReply->error()).arg(modelReply->errorString());
         qWarning() << errorString;
         modelReply->deleteLater();
         tempFile->deleteLater();
@@ -643,7 +643,7 @@ void Download::handleModelDownloadFinished()
     tempFile->close();
 
     if (!ModelList::globalInstance()->containsByFilename(modelFilename)) {
-        qWarning() << "ERROR: downloading no such file:" << modelFilename;
+        qWarning() << "HATA: İndirme için böyle bir dosya yok:" << modelFilename;
         modelReply->deleteLater();
         tempFile->deleteLater();
         return;

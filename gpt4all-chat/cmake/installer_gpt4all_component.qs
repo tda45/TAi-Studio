@@ -16,34 +16,34 @@ Component.prototype.createOperations = function() {
                 installer.setValue("UserProfile", userProfile);
                 component.addOperation("CreateShortcut",
                     targetDirectory + "/bin/chat.exe",
-                    "@UserProfile@/Desktop/GPT4All.lnk",
+                    "@UserProfile@/Desktop/TAi Studio.lnk",
                     "workingDirectory=" + targetDirectory + "/bin",
                     "iconPath=" + targetDirectory + "/gpt4all.ico",
-                    "iconId=0", "description=Open GPT4All");
+                    "iconId=0", "description=Open TAi Studio");
             } catch (e) {
                 print("ERROR: creating desktop shortcut" + e);
             }
             component.addOperation("CreateShortcut",
                 targetDirectory + "/bin/chat.exe",
-                "@StartMenuDir@/GPT4All.lnk",
+                "@StartMenuDir@/TAi Studio.lnk",
                 "workingDirectory=" + targetDirectory + "/bin",
                 "iconPath=" + targetDirectory + "/gpt4all.ico",
-                "iconId=0", "description=Open GPT4All");
+                "iconId=0", "description=Open TAi Studio");
         } else if (systemInfo.productType === "macos") {
             var gpt4allAppPath = targetDirectory + "/bin/gpt4all.app";
-            var symlinkPath = targetDirectory + "/../GPT4All.app";
+            var symlinkPath = targetDirectory + "/../TAi Studio.app";
             // Remove the symlink if it already exists
             component.addOperation("Execute", "rm", "-f", symlinkPath);
             // Create the symlink
             component.addOperation("Execute", "ln", "-s", gpt4allAppPath, symlinkPath);
         } else { // linux
             var homeDir = installer.environmentVariable("HOME");
-            if (!installer.fileExists(homeDir + "/Desktop/GPT4All.desktop")) {
+            if (!installer.fileExists(homeDir + "/Desktop/TAi Studio.desktop")) {
                 component.addOperation("CreateDesktopEntry",
-                    homeDir + "/Desktop/GPT4All.desktop",
+                    homeDir + "/Desktop/TAi Studio.desktop",
                     "Type=Application\nTerminal=false\nExec=\"" + targetDirectory +
-                    "/bin/chat\"\nName=GPT4All\nIcon=" + targetDirectory +
-                    "/gpt4all-48.png\nName[en_US]=GPT4All");
+                    "/bin/chat\"\nName=TAi Studio\nIcon=" + targetDirectory +
+                    "/gpt4all-48.png\nName[en_US]=TAi Studio");
             }
         }
     } catch (e) {
@@ -57,7 +57,7 @@ Component.prototype.createOperationsForArchive = function(archive)
 
     if (systemInfo.productType === "macos") {
         var uninstallTargetDirectory = installer.value("TargetDir");
-        var symlinkPath = uninstallTargetDirectory + "/../GPT4All.app";
+        var symlinkPath = uninstallTargetDirectory + "/../TAi Studio.app";
 
         // Remove the symlink during uninstallation
         if (installer.isUninstaller()) {

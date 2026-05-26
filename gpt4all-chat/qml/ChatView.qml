@@ -73,8 +73,8 @@ Rectangle {
               + "<li>Check the model file is complete in the download folder"
               + "<li>You can find the download folder in the settings dialog"
               + "<li>If you've sideloaded the model ensure the file is not corrupt by checking md5sum"
-              + "<li>Read more about what models are supported in our <a href=\"https://docs.gpt4all.io/\">documentation</a> for the gui"
-              + "<li>Check out our <a href=\"https://discord.gg/4M2QFmTt2k\">discord channel</a> for help").arg(currentChat.modelLoadingError);
+              + "<li>Read more about what models are supported in our <a href=\"https://github.com/tda45/TAi-Studio/\">documentation</a> for the gui"
+              + "<li>Check out our <a href=\"https://tda45.github.io\">website</a> for help").arg(currentChat.modelLoadingError);
     }
 
     PopupDialog {
@@ -774,7 +774,7 @@ Rectangle {
                                 Layout.topMargin: 15
                                 horizontalAlignment: Qt.AlignHCenter
                                 color: theme.mutedLighterTextColor
-                                text: qsTr("GPT4All requires that you install at least one\nmodel to get started")
+                                text: qsTr("TAi Studio requires that you install at least one\nmodel to get started")
                                 font.pixelSize: theme.fontSizeLarge
                             }
                         }

@@ -1275,7 +1275,7 @@ public:
 protected:
     bool onSimpleResponse(const QString &response) override
     {
-        auto responseUtf8Bytes = response.toUtf8().slice(m_offset);
+        auto responseUtf8Bytes = response.toUtf8().mid(m_offset);
         auto responseUtf8 = std::string(responseUtf8Bytes.begin(), responseUtf8Bytes.end());
         // extract all questions from response
         ptrdiff_t lastMatchEnd = -1;

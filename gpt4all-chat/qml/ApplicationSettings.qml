@@ -411,7 +411,7 @@ MySettingsTab {
         MySettingsLabel {
             id: dataLakeLabel
             text: qsTr("Enable Datalake")
-            helpText: qsTr("Send chats and feedback to the GPT4All Open-Source Datalake.")
+            helpText: qsTr("Send chats and feedback to the TAi Studio Open-Source Datalake.")
             Layout.row: 9
             Layout.column: 0
         }
@@ -576,7 +576,7 @@ MySettingsTab {
         MySettingsLabel {
             id: updatesLabel
             text: qsTr("Check For Updates")
-            helpText: qsTr("Manually check for an update to GPT4All.");
+            helpText: qsTr("Manually check for an update to TAi Studio.");
             Layout.row: 16
             Layout.column: 0
         }

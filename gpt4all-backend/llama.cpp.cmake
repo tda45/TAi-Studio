@@ -629,7 +629,12 @@ function(include_ggml SUFFIX)
 
         set(KOMPUTE_OPT_BUILT_IN_VULKAN_HEADER_TAG "v1.3.239" CACHE STRING "Kompute Vulkan headers tag")
         set(KOMPUTE_OPT_LOG_LEVEL Critical CACHE STRING "Kompute log level")
+        
         set(FMT_INSTALL OFF)
+
+        set(KOMPUTE_OPT_USE_BUILT_IN_FMT OFF CACHE BOOL "" FORCE)
+        set(KOMPUTE_OPT_USE_BUILT_IN_SPDLOG OFF CACHE BOOL "" FORCE)
+
         add_subdirectory(${LLAMA_DIR}/ggml/src/kompute)
 
         # Compile our shaders

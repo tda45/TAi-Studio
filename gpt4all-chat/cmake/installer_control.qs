@@ -29,9 +29,9 @@ Controller.prototype.TargetDirectoryPageCallback = function() {
 
     if (failedReq !== null) {
         cancelInstaller(
-            "Installation cannot continue because GPT4All does not support your operating system: " +
+            "Installation cannot continue because TAi Studio does not support your operating system: " +
             `${systemInfo.prettyProductName}<br/><br/>` +
-            `GPT4All requires ${failedReq} or newer.`
+            `TAi Studio requires ${failedReq} or newer.`
         );
     }
 }

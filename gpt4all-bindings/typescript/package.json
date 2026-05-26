@@ -1,5 +1,5 @@
 {
-  "name": "gpt4all",
+  "name": "tai-studio",
   "version": "4.0.0",
   "packageManager": "yarn@3.6.1",
   "main": "src/gpt4all.js",

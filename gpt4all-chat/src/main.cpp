@@ -15,18 +15,23 @@
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QFont>
+#include <QMovie>
 #include <QFontDatabase>
+#include <QLabel>
 #include <QList>
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
 #include <QSettings>
+#include <QScreen>
 #include <QString>
 #include <QStringList>
+#include <QTimer>
 #include <QUrl>
 #include <QVariant>
 #include <QWindow>
+#include <QWidget>
 #include <Qt>
 #include <QtAssert>
 #include <QtSystemDetection>
@@ -76,9 +81,9 @@ int main(int argc, char *argv[])
     FPDF_InitLibrary();
 #endif
 
-    QCoreApplication::setOrganizationName("nomic.ai");
-    QCoreApplication::setOrganizationDomain("gpt4all.io");
-    QCoreApplication::setApplicationName("GPT4All");
+    QCoreApplication::setOrganizationName("tda_45");
+    QCoreApplication::setOrganizationDomain("tda45.github.io");
+    QCoreApplication::setApplicationName("TAi Studio");
     QCoreApplication::setApplicationVersion(APP_VERSION);
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
@@ -138,9 +143,9 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance("download", 1, 0, "Download", Download::globalInstance());
     qmlRegisterSingletonInstance("network", 1, 0, "Network", Network::globalInstance());
     qmlRegisterSingletonInstance("localdocs", 1, 0, "LocalDocs", LocalDocs::globalInstance());
-    qmlRegisterSingletonInstance("toollist", 1, 0, "ToolList", ToolModel::globalInstance());
-    qmlRegisterUncreatableMetaObject(ToolEnums::staticMetaObject, "toolenums", 1, 0, "ToolEnums", "Error: only enums");
-    qmlRegisterUncreatableMetaObject(MySettingsEnums::staticMetaObject, "mysettingsenums", 1, 0, "MySettingsEnums", "Error: only enums");
+    qmlRegisterSingletonInstance("toolmodel", 1, 0, "ToolModel", ToolModel::globalInstance());
+    qmlRegisterUncreatableMetaObject(ToolEnums::staticMetaObject, "toolenums", 1, 0, "ToolEnums", "Hata: Yalnızca numaralandırmalar kullanılabilir");
+    qmlRegisterUncreatableMetaObject(MySettingsEnums::staticMetaObject, "mysettingsenums", 1, 0, "MySettingsEnums", "Hata: Yalnızca numaralandırılmış değerler kullanılabilir");
 
     {
         auto fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
@@ -192,4 +197,13 @@ int main(int argc, char *argv[])
 #endif
 
     return res;
+
+QQmlApplicationEngine splashEngine;
+splashEngine.load(QUrl("qrc:/gpt4all/qml/Splash.qml"));
+
+QTimer::singleShot(5000, [&]() {
+    splashEngine.deleteLater();
+    engine.load(url);
+});
+
 }

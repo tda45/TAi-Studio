@@ -25,7 +25,7 @@ void CodeInterpreter::run(const QList<ToolParam> &params)
     m_errorString = QString();
 
     Q_ASSERT(params.count() == 1
-          && params.first().name == "code"
+          && params.first().name == "kod"
           && params.first().type == ToolEnums::ParamType::String);
 
     const QString code = params.first().value.toString();
@@ -52,21 +52,21 @@ bool CodeInterpreter::interrupt()
 QList<ToolParamInfo> CodeInterpreter::parameters() const
 {
     return {{
-        "code",
+        "kod",
         ToolEnums::ParamType::String,
-        "javascript code to compute",
+        "hesaplamak için javascript kodu",
         true
     }};
 }
 
 QString CodeInterpreter::symbolicFormat() const
 {
-    return "{human readable plan to complete the task}\n" + ToolCallConstants::CodeInterpreterPrefix + "{code}\n" + ToolCallConstants::CodeInterpreterSuffix;
+    return "{görevi tamamlamak için insan tarafından okunabilir plan}\n" + ToolCallConstants::CodeInterpreterPrefix + "{kod}\n" + ToolCallConstants::CodeInterpreterSuffix;
 }
 
 QString CodeInterpreter::examplePrompt() const
 {
-    return R"(Write code to check if a number is prime, use that to see if the number 7 is prime)";
+    return R"(Bir sayının asal olup olmadığını kontrol eden bir kod yazın, bunu kullanarak 7 sayısının asal olup olmadığını kontrol edin.)";
 }
 
 QString CodeInterpreter::exampleCall() const
@@ -84,15 +84,15 @@ QString CodeInterpreter::exampleCall() const
 }
 
 const number = 7;
-console.log(`The number ${number} is prime: ${isPrime(number)}`);
+console.log(`numara ${number} asal: ${isPrime(number)}`);
 )";
 
-    return "Certainly! Let's compute the answer to whether the number 7 is prime.\n" + ToolCallConstants::CodeInterpreterPrefix + example + ToolCallConstants::CodeInterpreterSuffix;
+    return "Tabii ki! Sayının 7 asal olup olmadığını hesaplayalım.\n" + ToolCallConstants::CodeInterpreterPrefix + example + ToolCallConstants::CodeInterpreterSuffix;
 }
 
 QString CodeInterpreter::exampleReply() const
 {
-    return R"("The computed result shows that 7 is a prime number.)";
+    return R"("Hesaplanan sonuç 7'nin asal sayı olduğunu göstermektedir.)";
 }
 
 CodeInterpreterWorker::CodeInterpreterWorker()
@@ -142,7 +142,7 @@ void CodeInterpreterWorker::request(const QString &code)
     QString resultString;
 
     if (m_engine->isInterrupted()) {
-        resultString = QString("Error: code execution was interrupted or timed out.");
+        resultString = QString("Hata: Kod yürütmesi kesintiye uğradı veya zaman aşımına uğradı.");
    } else if (result.isError()) {
         // NOTE: We purposely do not set the m_error or m_errorString for the code interpreter since
         // we *want* the model to see the response has an error so it can hopefully correct itself. The

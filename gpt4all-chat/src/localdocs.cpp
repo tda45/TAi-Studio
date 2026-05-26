@@ -76,7 +76,7 @@ void LocalDocs::addFolder(const QString &collection, const QString &path)
 
     const QString embedding_model = EmbeddingLLM::model();
     if (embedding_model.isEmpty()) {
-        qWarning() << "ERROR: We have no embedding model";
+        qWarning() << "HATA: Gömme modelimiz yok";
         return;
     }
 
@@ -92,7 +92,7 @@ void LocalDocs::forceIndexing(const QString &collection)
 {
     const QString embedding_model = EmbeddingLLM::model();
     if (embedding_model.isEmpty()) {
-        qWarning() << "ERROR: We have no embedding model";
+        qWarning() << "HATA: Gömme modelimiz yok";
         return;
     }
 

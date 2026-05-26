@@ -54,18 +54,18 @@ void ChatItem::serializeSubItems(QDataStream &stream, int version)
     stream << name;
     switch (auto typ = type()) {
         using enum ChatItem::Type;
-        case Response:      { serializeResponse(stream, version);       break; }
-        case ToolCall:      { serializeToolCall(stream, version);       break; }
+        case Response:       { serializeResponse(stream, version);      break; }
+        case ToolCall:      { serializeToolCall(stream, version);      break; }
         case ToolResponse:  { serializeToolResponse(stream, version);   break; }
         case Text:          { serializeText(stream, version);           break; }
         case Think:         { serializeThink(stream, version);          break; }
         case System:
         case Prompt:
-            throw std::invalid_argument(fmt::format("cannot serialize subitem type {}", int(typ)));
+            throw std::invalid_argument(fmt::format("alt öge tipi serileştirilemiyor: {}", int(typ)));
     }
 
     stream << qsizetype(subItems.size());
-    for (ChatItem *item :subItems)
+    for (ChatItem *item : subItems)
         item->serializeSubItems(stream, version);
 }
 
@@ -110,19 +110,19 @@ void ChatItem::serialize(QDataStream &stream, int version)
                 if (!info.title.isEmpty())
                     stream << "\"" << info.title << "\". ";
                 if (!info.author.isEmpty())
-                    stream << "By " << info.author << ". ";
+                    stream << "Yazar: " << info.author << ". ";
                 if (!info.date.isEmpty())
-                    stream << "Date: " << info.date << ". ";
-                stream << "In " << info.file << ". ";
+                    stream << "Tarih: " << info.date << ". ";
+                stream << "Dosya: " << info.file << ". ";
                 if (info.page != -1)
-                    stream << "Page " << info.page << ". ";
+                    stream << "Sayfa " << info.page << ". ";
                 if (info.from != -1) {
-                    stream << "Lines " << info.from;
+                    stream << "Satır " << info.from;
                     if (info.to != -1)
                         stream << "-" << info.to;
                     stream << ". ";
                 }
-                stream << "[Context](context://" << validReferenceNumber - 1 << ")";
+                stream << "[Bağlam](context://" << validReferenceNumber - 1 << ")";
             }
             references.append(reference);
             referencesContext.append(info.text);
@@ -142,7 +142,7 @@ void ChatItem::serialize(QDataStream &stream, int version)
 
     if (version >= 12) {
         stream << qsizetype(subItems.size());
-        for (ChatItem *item :subItems)
+        for (ChatItem *item : subItems)
             item->serializeSubItems(stream, version);
     }
 }
@@ -150,7 +150,7 @@ void ChatItem::serialize(QDataStream &stream, int version)
 bool ChatItem::deserializeToolCall(QDataStream &stream, int version)
 {
     stream >> value;
-    return toolCallInfo.deserialize(stream, version);;
+    return toolCallInfo.deserialize(stream, version);
 }
 
 bool ChatItem::deserializeToolResponse(QDataStream &stream, int version)
@@ -182,9 +182,9 @@ bool ChatItem::deserializeSubItems(QDataStream &stream, int version)
 {
     stream >> name;
     try {
-        type(); // check name
+        type(); // ismi kontrol et
     } catch (const std::exception &e) {
-        qWarning() << "ChatModel ERROR:" << e.what();
+        qWarning() << "ChatModel HATASI:" << e.what();
         return false;
     }
     switch (auto typ = type()) {
@@ -196,7 +196,7 @@ bool ChatItem::deserializeSubItems(QDataStream &stream, int version)
         case Think:         { deserializeThink(stream, version); break; }
         case System:
         case Prompt:
-            throw std::invalid_argument(fmt::format("cannot serialize subitem type {}", int(typ)));
+            throw std::invalid_argument(fmt::format("alt öge tipi serileştirilemiyor: {}", int(typ)));
     }
 
     qsizetype count;
@@ -221,14 +221,14 @@ bool ChatItem::deserialize(QDataStream &stream, int version)
     }
     stream >> name;
     try {
-        type(); // check name
+        type(); // ismi kontrol et
     } catch (const std::exception &e) {
-        qWarning() << "ChatModel ERROR:" << e.what();
+        qWarning() << "ChatModel HATASI:" << e.what();
         return false;
     }
     stream >> value;
     if (version < 10) {
-        // This is deprecated and no longer used
+        // Bu özellik kullanımdan kaldırıldı ve artık kullanılmıyor
         QString prompt;
         stream >> prompt;
     }
@@ -266,7 +266,7 @@ bool ChatItem::deserialize(QDataStream &stream, int version)
         if (!references.isEmpty()) {
             QList<QString> referenceList = references.split("\n");
 
-            // Ignore empty lines and those that begin with "---" which is no longer used
+            // Boş satırları ve artık kullanılmayan "---" ile başlayan satırları yoksay
             for (auto it = referenceList.begin(); it != referenceList.end();) {
                 if (it->trimmed().isEmpty() || it->trimmed().startsWith("---"))
                     it = referenceList.erase(it);
@@ -283,35 +283,37 @@ bool ChatItem::deserialize(QDataStream &stream, int version)
                 QString dummy;
                 int validReferenceNumber;
                 refStream >> validReferenceNumber >> dummy;
-                // Extract title (between quotes)
+                
+                // Başlığı ayıkla (tırnak işaretleri arasındakiler)
                 if (reference.contains("\"")) {
                     int startIndex = reference.indexOf('"') + 1;
                     int endIndex = reference.indexOf('"', startIndex);
                     info.title = reference.mid(startIndex, endIndex - startIndex);
                 }
 
-                // Extract author (after "By " and before the next period)
+                // Yazarı ayıkla ("By " sonrasını ve bir sonraki noktadan öncesini alır)
+                // Not: Eski serileştirilmiş verileri okuyabilmek için "By " metni korunmuştur.
                 if (reference.contains("By ")) {
                     int startIndex = reference.indexOf("By ") + 3;
                     int endIndex = reference.indexOf('.', startIndex);
                     info.author = reference.mid(startIndex, endIndex - startIndex).trimmed();
                 }
 
-                // Extract date (after "Date: " and before the next period)
+                // Tarihi ayıkla ("Date: " sonrasını ve bir sonraki noktadan öncesini alır)
                 if (reference.contains("Date: ")) {
                     int startIndex = reference.indexOf("Date: ") + 6;
                     int endIndex = reference.indexOf('.', startIndex);
                     info.date = reference.mid(startIndex, endIndex - startIndex).trimmed();
                 }
 
-                // Extract file name (after "In " and before the "[Context]")
+                // Dosya adını ayıkla ("In " sonrası ve "[Context]" öncesi)
                 if (reference.contains("In ") && reference.contains(". [Context]")) {
                     int startIndex = reference.indexOf("In ") + 3;
                     int endIndex = reference.indexOf(". [Context]", startIndex);
                     info.file = reference.mid(startIndex, endIndex - startIndex).trimmed();
                 }
 
-                // Extract page number (after "Page " and before the next space)
+                // Sayfa numarasını ayıkla ("Page " sonrası ve bir sonraki boşluk öncesi)
                 if (reference.contains("Page ")) {
                     int startIndex = reference.indexOf("Page ") + 5;
                     int endIndex = reference.indexOf(' ', startIndex);
@@ -319,7 +321,7 @@ bool ChatItem::deserialize(QDataStream &stream, int version)
                     info.page = reference.mid(startIndex, endIndex - startIndex).toInt();
                 }
 
-                // Extract lines (after "Lines " and before the next space or hyphen)
+                // Satırları ayıkla ("Lines " sonrası ve sonraki boşluk ya da tire işareti öncesi)
                 if (reference.contains("Lines ")) {
                     int startIndex = reference.indexOf("Lines ") + 6;
                     int endIndex = reference.indexOf(' ', startIndex);

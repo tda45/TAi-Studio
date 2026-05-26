@@ -46,7 +46,7 @@ Rectangle {
                     Layout.topMargin: 15
                     horizontalAlignment: Qt.AlignHCenter
                     color: theme.mutedLighterTextColor
-                    text: qsTr("Install a model to get started using GPT4All")
+                    text: qsTr("Install a model to get started using TAi Studio")
                     font.pixelSize: theme.fontSizeLarge
                 }
             }

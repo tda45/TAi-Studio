@@ -189,7 +189,7 @@ MySettingsTab {
                 id: systemMessageLabel
                 text: qsTr("System Message")
                 helpText: qsTr("A message to set the context or guide the behavior of the model. Leave blank for " +
-                               "none. NOTE: Since GPT4All 3.5, this should not contain control tokens.")
+                               "none. NOTE: Since TAi Studio 1.0, this should not contain control tokens.")
                 onReset: () => resetSystemMessageDialog.show(root.currentModelId, resetClears)
                 function updateResetButton() {
                     const info = root.currentModelInfo;

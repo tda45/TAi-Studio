@@ -80,7 +80,7 @@ GridLayout {
             TextArea {
                 text: {
                     if (name === "Response: ")
-                        return qsTr("GPT4All");
+                        return qsTr("TAi Studio");
                     return qsTr("You");
                 }
                 padding: 0

@@ -28,7 +28,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         verticalAlignment: Text.AlignTop
-        text: qsTr("These models have been specifically configured for use in GPT4All. The first few models on the " +
+        text: qsTr("These models have been specifically configured for use in TAi Studio. The first few models on the " +
                    "list are known to work the best, but you should only attempt to use models that will fit in your " +
                    "available memory.")
         font.pixelSize: theme.fontSizeLarger

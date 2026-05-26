@@ -21,7 +21,8 @@ Window {
     minimumWidth: 658 + 470 * theme.fontScale
     minimumHeight: 384 + 160 * theme.fontScale
     visible: true
-    title: qsTr("GPT4All v%1").arg(Qt.application.version)
+    title: qsTr("TAi Studio v1").arg(Qt.application.version)
+    property bool appLoaded: false
 
     SystemTrayIcon {
         id: systemTrayIcon
@@ -558,7 +559,7 @@ Window {
                     color: image.hovered ? theme.mutedDarkTextColorHovered : theme.mutedDarkTextColor
                     TapHandler {
                         onTapped: function(eventPoint, button) {
-                            Qt.openUrlExternally("https://nomic.ai")
+                            Qt.openUrlExternally("https://tda45.github.io")
                         }
                     }
                 }
@@ -681,8 +682,8 @@ Window {
             }
 
             Item {
-                Accessible.name: qsTr("Installed models")
-                Accessible.description: qsTr("View of installed models")
+                Accessible.name: qsTr("Kurulmuş modeller")
+                Accessible.description: qsTr("Kurulu modelleri gör")
             }
 
             Connections {
@@ -766,6 +767,43 @@ Window {
                 function onModelsViewRequested() {
                     modelsView.show();
                 }
+            }
+        }
+    }
+    Rectangle {
+        id: splashScreen
+
+        anchors.fill: parent
+        color: "#0b0b0b"
+        z: 99999
+
+        visible: !window.appLoaded
+
+        AnimatedImage {
+            anchors.centerIn: parent
+            width: 240
+            height: 240
+
+            source: "qrc:/gpt4all/icons/loading.gif"
+            playing: true
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Timer {
+            interval: 3500
+            running: true
+            repeat: false
+
+            onTriggered: {
+                window.appLoaded = true
+            }
+        }
+
+        opacity: window.appLoaded ? 0 : 1
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 400
             }
         }
     }

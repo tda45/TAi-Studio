@@ -7,8 +7,13 @@ set(APP_VERSION_MINOR 10)
 set(APP_VERSION_PATCH 1)
 set(APP_VERSION_BASE "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_PATCH}")
 set(APP_VERSION "${APP_VERSION_BASE}-dev0")
+set(CMAKE_PREFIX_PATH "C:/Qt/6.8.3/msvc2022_64")
+set(DGGML_VULKAN ON)
+set(GGML_KOMPUTE OFF CACHE BOOL "")
+set(DLLMODEL_CUDA OFF)
+set(Dfmt_DIR "C:/vcpkg/installed/x64-windows/share/fmt")
 
-project(gpt4all VERSION ${APP_VERSION_BASE} LANGUAGES CXX C)
+project(tai-studio VERSION ${APP_VERSION_BASE} LANGUAGES CXX C)
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "..." FORCE)
@@ -104,7 +109,7 @@ elseif (GPT4ALL_USE_QTPDF MATCHES "^(ON|AUTO)$")
     set(GPT4ALL_USING_QTPDF ON)
     list(APPEND GPT4ALL_QT_COMPONENTS Pdf)
 endif()
-find_package(Qt6 6.8 COMPONENTS ${GPT4ALL_QT_COMPONENTS} REQUIRED)
+find_package(Qt6 6.8.3 COMPONENTS ${GPT4ALL_QT_COMPONENTS} REQUIRED)
 
 if (QT_KNOWN_POLICY_QTP0004)
     qt_policy(SET QTP0004 NEW)  # generate extra qmldir files on Qt 6.8+
@@ -285,6 +290,7 @@ qt_add_qml_module(chat
       qml/PopupDialog.qml
       qml/SettingsView.qml
       qml/StartupDialog.qml
+      qml/Splash.qml
       qml/ConfirmationDialog.qml
       qml/Theme.qml
       qml/ThumbsDownDialog.qml
@@ -376,17 +382,7 @@ qt_add_qml_module(chat
       icons/up_down.svg
       icons/webpage.svg
       icons/you.svg
-)
-
-qt_add_translations(chat
-    TS_FILES
-    ${CMAKE_SOURCE_DIR}/translations/gpt4all_en_US.ts
-    ${CMAKE_SOURCE_DIR}/translations/gpt4all_es_MX.ts
-    ${CMAKE_SOURCE_DIR}/translations/gpt4all_zh_CN.ts
-    ${CMAKE_SOURCE_DIR}/translations/gpt4all_zh_TW.ts
-    ${CMAKE_SOURCE_DIR}/translations/gpt4all_ro_RO.ts
-    ${CMAKE_SOURCE_DIR}/translations/gpt4all_it_IT.ts
-    ${CMAKE_SOURCE_DIR}/translations/gpt4all_pt_BR.ts
+      icons/loading.gif
 )
 
 set_target_properties(chat PROPERTIES

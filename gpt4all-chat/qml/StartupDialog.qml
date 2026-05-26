@@ -89,15 +89,15 @@ MyDialog {
 By enabling these features, you will be able to participate in the democratic process of training a
 large language model by contributing data for future model improvements.
 
-When a GPT4All model responds to you and you have opted-in, your conversation will be sent to the GPT4All
+When a TAi Studio model responds to you and you have opted-in, your conversation will be sent to the TAi Studio
 Open Source Datalake. Additionally, you can like/dislike its response. If you dislike a response, you
-can suggest an alternative response. This data will be collected and aggregated in the GPT4All Datalake.
+can suggest an alternative response. This data will be collected and aggregated in the TAi Studio Datalake.
 
-NOTE: By turning on this feature, you will be sending your data to the GPT4All Open Source Datalake.
+NOTE: By turning on this feature, you will be sending your data to the TAi Studio Open Source Datalake.
 You should have no expectation of chat privacy when this feature is enabled. You should; however, have
 an expectation of an optional attribution if you wish. Your chat data will be openly available for anyone
-to download and will be used by Nomic AI to improve future GPT4All models. Nomic AI will retain all
-attribution information attached to your data and you will be credited as a contributor to any GPT4All
+to download and will be used by tda_45 to improve future TAi Studio models. tda_45 will retain all
+attribution information attached to your data and you will be credited as a contributor to any TAi Studio
 model release that uses your data!")
 
                 focus: false
@@ -115,7 +115,7 @@ model release that uses your data!")
             anchors.right: parent.right
             Label {
                 id: optInStatistics
-                text: qsTr("Opt-in to anonymous usage analytics used to improve GPT4All")
+                text: qsTr("Opt-in to anonymous usage analytics used to improve TAi Studio")
                 Layout.row: 0
                 Layout.column: 0
                 color: theme.textColor
@@ -229,7 +229,7 @@ model release that uses your data!")
 
             Label {
                 id: optInNetwork
-                text: qsTr("Opt-in to anonymous sharing of chats to the GPT4All Datalake")
+                text: qsTr("Opt-in to anonymous sharing of chats to the TAi Studio Datalake")
                 Layout.row: 1
                 Layout.column: 0
                 color: theme.textColor
@@ -263,7 +263,7 @@ model release that uses your data!")
                     font.pixelSize: theme.fontSizeLarge
                     Accessible.role: Accessible.RadioButton
                     Accessible.name: qsTr("Opt-in for network")
-                    Accessible.description: qsTr("Allow opt-in anonymous sharing of chats to the GPT4All Datalake")
+                    Accessible.description: qsTr("Allow opt-in anonymous sharing of chats to the TAi Studio Datalake")
 
                     background: Rectangle {
                         color: "transparent"
@@ -305,7 +305,7 @@ model release that uses your data!")
                     font.pixelSize: theme.fontSizeLarge
                     Accessible.role: Accessible.RadioButton
                     Accessible.name: qsTr("Opt-out for network")
-                    Accessible.description: qsTr("Allow opt-out anonymous sharing of chats to the GPT4All Datalake")
+                    Accessible.description: qsTr("Allow opt-out anonymous sharing of chats to the TAi Studio Datalake")
 
                     background: Rectangle {
                         color: "transparent"

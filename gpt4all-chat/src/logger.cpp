@@ -32,7 +32,7 @@ Logger::Logger()
     // Open new log file
     m_file.setFileName(dir+"/log.txt");
     if (!m_file.open(QIODevice::NewOnly | QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning() << "Failed to open log file, logging to stdout...";
+        qWarning() << "Günlük dosyası açılamadı, günlük kaydı standart çıktıya yapılıyor...";
         m_file.open(stdout, QIODevice::WriteOnly | QIODevice::Text);
     }
     // On success, install message handler
@@ -49,16 +49,16 @@ void Logger::messageHandler(QtMsgType type, const QMessageLogContext &, const QS
         typeString = "Debug";
         break;
     case QtInfoMsg:
-        typeString = "Info";
+        typeString = "Hakkında";
         break;
     case QtWarningMsg:
-        typeString = "Warning";
+        typeString = "Uyarı";
         break;
     case QtCriticalMsg:
-        typeString = "Critical";
+        typeString = "Kritik";
         break;
     case QtFatalMsg:
-        typeString = "Fatal";
+        typeString = "Ölümcül";
         break;
     default:
         typeString = "???";
